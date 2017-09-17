@@ -7,8 +7,29 @@
     // page is now ready, initialize the calendar...
 
     $('#calendar').fullCalendar({
+
+      events: [
+        @foreach(Auth::user()->events as $event)
+        {
+          title: '{{ $event->title }}',
+          description: '{{ $event->description }}',
+          start: '{{ $event->start_date }}'
+          @if($event->end_date !== NULL)
+            , end: '{{ $event->end_date }}'
+          @endif
+        }
+        @endforeach
+      ],
+      eventRender: function(event, element) {
+        element.prop('title', event.description);
+      },
       editable: true,
       ventLimit: true, // allow "more" link when too many events
+      header: {
+        left:   'title',
+        center: '',
+        right:  'today prev,next month,agendaWeek,agendaDay'
+      },
     });
 
   });
