@@ -1,6 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
+<script>
+  $(document).ready(function() {
+
+    // page is now ready, initialize the calendar...
+
+    $('#calendar').fullCalendar({
+      editable: true,
+      ventLimit: true, // allow "more" link when too many events
+    });
+
+  });
+</script>
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
@@ -14,7 +26,8 @@
                         </div>
                     @endif
 
-                    Welcome to appointment scheduling!
+                    <p>Welcome to appointment scheduling!</p>
+                    <div id='calendar'></div>
                 </div>
             </div>
         </div>
