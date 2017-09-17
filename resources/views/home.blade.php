@@ -14,7 +14,7 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                    Welcome to appointment scheduling!
                 </div>
             </div>
         </div>
