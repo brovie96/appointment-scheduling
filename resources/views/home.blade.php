@@ -4,31 +4,66 @@
 <script>
   $(document).ready(function() {
 
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+
     // page is now ready, initialize the calendar...
 
     $('#calendar').fullCalendar({
 
-      events: [
-        @foreach(Auth::user()->events as $event)
-        {
-          title: '{{ $event->title }}',
-          description: '{{ $event->description }}',
-          start: '{{ $event->start_date }}'
-          @if($event->end_date !== NULL)
-            , end: '{{ $event->end_date }}'
-          @endif
+      events: {
+        url: '/api/get_events',
+        type: 'GET',
+        data: {
+          id: {{ Auth::user()->id }}
         }
-        @endforeach
-      ],
+      },
       eventRender: function(event, element) {
         element.prop('title', event.description);
       },
+      eventDrop: function(event, delta, revertFunc) {
+        if (!confirm("Are you sure about this change?")) {
+          revertFunc();
+        }
+        else {
+          $.post({
+            url: 'api/update_event',
+            data: {
+              id: event.eventid,
+              title: event.title,
+              description: event.description,
+              start: event.start.format(),
+              end: event.end.format()
+            }
+          });
+        }
+      },
+      eventResize: function(event, delta, revertFunc) {
+        if (!confirm("is this okay?")) {
+          revertFunc();
+        }
+        else {
+          $.post({
+            url: 'api/update_event',
+            data: {
+              id: event.eventid,
+              title: event.title,
+              description: event.description,
+              start: event.start.format(),
+              end: event.end.format()
+            }
+          });
+        }
+      },
       editable: true,
-      ventLimit: true, // allow "more" link when too many events
+      eventLimit: true, // allow "more" link when too many events
       header: {
-        left:   'title',
-        center: '',
-        right:  'today prev,next month,agendaWeek,agendaDay'
+        left:   'today prev,next',
+        center: 'title',
+        right:  'month,agendaWeek,agendaDay'
       },
     });
 
