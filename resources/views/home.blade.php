@@ -27,10 +27,11 @@
           end: null,
           @endif
           @if($event->allDay == 1)
-          allDay: true
+          allDay: true,
           @else
-          allDay: false
+          allDay: false,
           @endif
+          url: '/api/event/{{ $event->id }}/edit'
         },
         @endforeach
       ],
@@ -42,10 +43,10 @@
           revertFunc();
         }
         else {
-          $.post({
-            url: 'api/update_event',
+          $.ajax({
+            url: 'api/event/' + event.eventid,
+            method: 'PUT',
             data: {
-              id: event.eventid,
               title: event.title,
               description: event.description,
               start: event.start.format(),
@@ -60,10 +61,10 @@
           revertFunc();
         }
         else {
-          $.post({
-            url: 'api/update_event',
+          $.ajax({
+            url: 'api/event/' + event.eventid,
+            method: 'PUT',
             data: {
-              id: event.eventid,
               title: event.title,
               description: event.description,
               start: event.start.format(),
@@ -88,7 +89,7 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Dashboard</div>
+                <div class="panel-heading">Main Page</div>
 
                 <div class="panel-body">
                     @if (session('status'))
@@ -97,7 +98,6 @@
                         </div>
                     @endif
 
-                    <p>Welcome to appointment scheduling!</p>
                     <div id='calendar'></div>
                 </div>
             </div>
