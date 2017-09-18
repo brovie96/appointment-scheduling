@@ -15,8 +15,11 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
-                    You have id of {{ $id }}
+                    @can('update', App\Event::find($id))
+                      You have id of {{ $id }}
+                    @else
+                      You cannot edit this event.
+                    @endcan
                 </div>
             </div>
         </div>

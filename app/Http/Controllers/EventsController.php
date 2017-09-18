@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use App\Event;
 
 class EventsController extends Controller
@@ -57,7 +58,7 @@ class EventsController extends Controller
      */
     public function edit($id)
     {
-        return view('edit_event')->with('id', $id);
+      return view('edit_event')->with('id', $id);
     }
 
     /**

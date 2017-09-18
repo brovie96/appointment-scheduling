@@ -31,7 +31,7 @@
           @else
           allDay: false,
           @endif
-          url: '/api/event/{{ $event->id }}/edit'
+          url: '/event/{{ $event->id }}/edit'
         },
         @endforeach
       ],
@@ -44,7 +44,7 @@
         }
         else {
           $.ajax({
-            url: 'api/event/' + event.eventid,
+            url: 'event/' + event.eventid,
             method: 'PUT',
             data: {
               title: event.title,
@@ -62,7 +62,7 @@
         }
         else {
           $.ajax({
-            url: 'api/event/' + event.eventid,
+            url: 'event/' + event.eventid,
             method: 'PUT',
             data: {
               title: event.title,
