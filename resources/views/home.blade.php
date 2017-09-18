@@ -14,13 +14,26 @@
 
     $('#calendar').fullCalendar({
 
-      events: {
-        url: '/api/get_events',
-        type: 'POST',
-        data: {
-          id: {{ Auth::user()->id }}
-        }
-      },
+      events: [
+        @foreach(Auth::user()->events as $event)
+        {
+          eventid: {{ $event->id }},
+          title: '{{ $event->title }}',
+          description: '{{ $event->description }}',
+          start: '{{ $event->start }}',
+          @if($event->end !== NULL)
+          end: '{{ $event->end }}',
+          @else
+          end: null,
+          @endif
+          @if($event->allDay == 1)
+          allDay: true
+          @else
+          allDay: false
+          @endif
+        },
+        @endforeach
+      ],
       eventRender: function(event, element) {
         element.prop('title', event.description);
       },
@@ -29,30 +42,17 @@
           revertFunc();
         }
         else {
-          if(event.end == null) {
-            $.post({
-              url: 'api/update_event',
-              data: {
-                id: event.eventid,
-                title: event.title,
-                description: event.description,
-                start: event.start.format(),
-                end: null
-              }
-            });
-          }
-          else {
-            $.post({
-              url: 'api/update_event',
-              data: {
-                id: event.eventid,
-                title: event.title,
-                description: event.description,
-                start: event.start.format(),
-                end: event.end.format()
-              }
-            });
-          }
+          $.post({
+            url: 'api/update_event',
+            data: {
+              id: event.eventid,
+              title: event.title,
+              description: event.description,
+              start: event.start.format(),
+              end: (event.end != null) ? event.end.format() : null,
+              allDay: event.allDay ? 1 : 0
+            }
+          });
         }
       },
       eventResize: function(event, delta, revertFunc) {
@@ -67,7 +67,8 @@
               title: event.title,
               description: event.description,
               start: event.start.format(),
-              end: event.end.format()
+              end: (event.end != null) ? event.end.format() : null,
+              allDay: event.allDay ? 1 : 0
             }
           });
         }

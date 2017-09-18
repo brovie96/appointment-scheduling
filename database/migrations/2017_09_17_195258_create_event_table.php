@@ -17,10 +17,11 @@ class CreateEventTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
-            $table->dateTime('start_date');
-            $table->dateTime('end_date')->nullable();
+            $table->dateTime('start');
+            $table->dateTime('end')->nullable();
             $table->string('title');
             $table->text('description');
+            $table->boolean('allDay');
             $table->timestamps();
         });
     }
@@ -32,6 +33,9 @@ class CreateEventTable extends Migration
      */
     public function down()
     {
+        Schema::table('events', function (Blueprint $table) {
+            $table->dropForeign('events_user_id_foreign');
+        });
         Schema::dropIfExists('events');
     }
 }

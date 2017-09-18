@@ -12,9 +12,9 @@ class EventsController extends Controller
     {
       return Event::where([
         ['user_id', '=', $request->id],
-        ['start_date', '>=', $request->start],
-        ['start_date', '<=', $request->end]
-      ])->select('id as eventid', 'title', 'description', 'start_date as start', 'end_date as end')->get();
+        ['start', '>=', $request->start],
+        ['start', '<=', $request->end]
+      ])->select('id as eventid', 'title', 'description', 'start', 'end', 'allDay')->get();
     }
 
     public function update(Request $request)
@@ -22,8 +22,9 @@ class EventsController extends Controller
       $event = Event::find($request->id);
       $event->title = $request->title;
       $event->description = $request->description;
-      $event->start_date = $request->start;
-      $event->end_date = $request->end;
+      $event->start = $request->start;
+      $event->end = $request->end;
+      $event->allDay = $request->allDay;
       $event->save();
     }
 }
