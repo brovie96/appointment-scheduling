@@ -17,5 +17,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/get_events', 'EventsController@get');
+Route::post('/get_events', 'EventsController@get');
 Route::post('/update_event', 'EventsController@update');

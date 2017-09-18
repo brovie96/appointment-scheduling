@@ -16,7 +16,7 @@
 
       events: {
         url: '/api/get_events',
-        type: 'GET',
+        type: 'POST',
         data: {
           id: {{ Auth::user()->id }}
         }
@@ -29,16 +29,30 @@
           revertFunc();
         }
         else {
-          $.post({
-            url: 'api/update_event',
-            data: {
-              id: event.eventid,
-              title: event.title,
-              description: event.description,
-              start: event.start.format(),
-              end: event.end.format()
-            }
-          });
+          if(event.end == null) {
+            $.post({
+              url: 'api/update_event',
+              data: {
+                id: event.eventid,
+                title: event.title,
+                description: event.description,
+                start: event.start.format(),
+                end: null
+              }
+            });
+          }
+          else {
+            $.post({
+              url: 'api/update_event',
+              data: {
+                id: event.eventid,
+                title: event.title,
+                description: event.description,
+                start: event.start.format(),
+                end: event.end.format()
+              }
+            });
+          }
         }
       },
       eventResize: function(event, delta, revertFunc) {
