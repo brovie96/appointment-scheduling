@@ -74,26 +74,12 @@ class EventsController extends Controller
       $event = Event::find($id);
       $event->title = $request->title;
       $event->description = $request->description;
+      $event->start = $request->start;
+      $event->end = $request->end;
       if($request->has('allDay')) //coming from drag-and-drop
-      {
-        $event->start = $request->start;
-        $event->end = $request->end;
         $event->allDay = $request->allDay;
-      }
       else //coming from form
-      {
         $event->allDay = $request->has('allDayCheck') ? 1 : 0;
-        if($event->allDay == 1)
-        {
-          $event->start = (new Carbon($request->start))->toDateString();
-          $event->end = null;
-        }
-        else
-        {
-          $event->start = $request->start;
-          $event->end = $request->end;
-        }
-      }
       $event->save();
       return redirect("/");
     }
