@@ -41,40 +41,30 @@
         element.prop('title', event.description);
       },
       eventDrop: function(event, delta, revertFunc) {
-        if (!confirm("Are you sure about this change?")) {
-          revertFunc();
-        }
-        else {
-          $.ajax({
-            url: 'event/' + event.eventid,
-            method: 'PUT',
-            data: {
-              title: event.title,
-              description: event.description,
-              start: event.start.format(),
-              end: (event.end != null) ? event.end.format() : null,
-              allDay: event.allDay ? 1 : 0
-            }
-          });
-        }
+        $.ajax({
+          url: 'event/' + event.eventid,
+          method: 'PUT',
+          data: {
+            title: event.title,
+            description: event.description,
+            start: event.start.format(),
+            end: (event.end != null) ? event.end.format() : null,
+            allDay: event.allDay ? 1 : 0
+          }
+        });
       },
       eventResize: function(event, delta, revertFunc) {
-        if (!confirm("is this okay?")) {
-          revertFunc();
-        }
-        else {
-          $.ajax({
-            url: 'event/' + event.eventid,
-            method: 'PUT',
-            data: {
-              title: event.title,
-              description: event.description,
-              start: event.start.format(),
-              end: (event.end != null) ? event.end.format() : null,
-              allDay: event.allDay ? 1 : 0
-            }
-          });
-        }
+        $.ajax({
+          url: 'event/' + event.eventid,
+          method: 'PUT',
+          data: {
+            title: event.title,
+            description: event.description,
+            start: event.start.format(),
+            end: (event.end != null) ? event.end.format() : null,
+            allDay: event.allDay ? 1 : 0
+          }
+        });
       },
       editable: true,
       eventLimit: true, // allow "more" link when too many events
