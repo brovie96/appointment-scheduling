@@ -26,7 +26,7 @@ class EventsController extends Controller
      */
     public function create()
     {
-        //
+        return view('create_event');
     }
 
     /**
@@ -37,7 +37,22 @@ class EventsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $request->validate([
+        'start' => 'date_multi_format:"Y-m-d\TH:i:s","Y-m-d\TH:i","Y-m-d"',
+        'end'   => 'date_multi_format:"Y-m-d\TH:i:s","Y-m-d\TH:i","Y-m-d"|after:start|nullable'
+      ]);
+      $event = new Event;
+      $event->user_id = $request->user_id;
+      $event->title = $request->title;
+      $event->description = $request->description;
+      $event->start = $request->start;
+      $event->end = $request->end;
+      if($request->has('allDay')) //coming from drag-and-drop
+        $event->allDay = $request->allDay;
+      else //coming from form
+        $event->allDay = $request->has('allDayCheck') ? 1 : 0;
+      $event->save();
+      return redirect('/');
     }
 
     /**
@@ -85,7 +100,7 @@ class EventsController extends Controller
       else //coming from form
         $event->allDay = $request->has('allDayCheck') ? 1 : 0;
       $event->save();
-      return redirect("/");
+      return redirect('/');
     }
 
     /**
@@ -96,6 +111,8 @@ class EventsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $event = Event::find($id);
+        $event->delete();
+        return redirect('/');
     }
 }

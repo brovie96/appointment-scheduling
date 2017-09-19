@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Event')
+@section('title', 'Create Event')
 
 @section('content')
 
@@ -10,14 +10,18 @@
   var checkbox;
   var end;
   var endlabel;
-  var deleteForm;
 
   function check() {
     if(checkbox.is(":checked")) {
       //alert("Box checked!");
-      var time = new Date(start.prop('value'));
-      start.prop('type', 'date');
-      start.prop('value', time.toISOString().split('T')[0]);
+      var time;
+      if(start.prop('value') != '') {
+        time = new Date(start.prop('value'));
+        start.prop('type', 'date');
+        start.prop('value', time.toISOString().split('T')[0]);
+      }
+      else
+        start.prop('type', 'date');
       if(end.prop('value') != '') {
         time = new Date(end.prop('value'));
         end.prop('type', 'date');
@@ -30,9 +34,14 @@
     }
     else {
       //alert("Box unchecked!");
-      var time = new Date(start.prop('value'));
-      start.prop('type', 'datetime-local');
-      start.prop('value', time.toISOString().split('T')[0] + "T00:00:00");
+      var time;
+      if(start.prop('value') != '') {
+        time = new Date(start.prop('value'));
+        start.prop('type', 'date');
+        start.prop('value', time.toISOString().split('T')[0]);
+      }
+      else
+        start.prop('type', 'date');
       if(end.prop('value') != '') {
         time = new Date(end.prop('value'));
         end.prop('type', 'datetime-local');
@@ -43,11 +52,6 @@
       startlabel.html('Start Date/Time<br>(yyyy-mm-ddThh:mm)');
       endlabel.html('End Date/Time (optional)');
     }
-  }
-
-  function remove() {
-    if(confirm("Are you sure you want to delete?"))
-      deleteForm.submit();
   }
 
   $(document).ready(function() {
@@ -66,7 +70,7 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Edit Event</div>
+                <div class="panel-heading">Create Event</div>
 
                 <div class="panel-body">
                     @if (session('status'))
@@ -74,22 +78,22 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    @can('update', App\Event::find($id))
-                      <form class="form-horizontal" action="/event/{{ $id }}" method="POST">
-                        <input name="_method" type="hidden" value="PUT">
+                    @can('create', App\Event::class)
+                      <form class="form-horizontal" action="/event" method="POST">
                         {{ csrf_field() }}
+                        <input name="user_id" type="hidden" value="{{ Auth::user()->id }}">
                         <div class="form-group">
                             <label for="title" class="col-md-4 control-label">Title</label>
 
                             <div class="col-md-6">
-                                <input id="title" type="text" class="form-control" name="title" value="{{ (old('title') != NULL) ? old('title') : App\Event::find($id)->title }}" required>
+                                <input id="title" type="text" class="form-control" name="title" value="{{ old('title') }}" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="description" class="col-md-4 control-label">Description</label>
 
                             <div class="col-md-6">
-                                <input id="description" type="text" class="form-control" name="description" value="{{ (old('description') != NULL) ? old('description') : App\Event::find($id)->description }}" required>
+                                <input id="description" type="text" class="form-control" name="description" value="{{  old('description')  }}" required>
                             </div>
                         </div>
 
@@ -97,7 +101,7 @@
                             <label id='startlabel' for="start" class="col-md-4 control-label">Start Date/Time<br>(yyyy-mm-ddThh:mm)</label>
 
                             <div class="col-md-6">
-                                <input id="start" type="datetime-local" class="form-control" name="start" value="{{ (old('start') != NULL) ? old('start') : preg_split('/[\s]/', App\Event::find($id)->start)[0] . 'T' . preg_split('/[\s]/', App\Event::find($id)->start)[1] }}" required>
+                                <input id="start" type="datetime-local" class="form-control" name="start" value="{{ old('start') }}" required>
                                 @if ($errors->has('start'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('start') }}</strong>
@@ -110,7 +114,7 @@
                             <label id='endlabel' for="end" class="col-md-4 control-label">End Date/Time (optional)</label>
 
                             <div class="col-md-6">
-                                <input id="end" type="datetime-local" class="form-control" name="end" value="{{ (old('end') != NULL) ? old('end') : ((App\Event::find($id)->end != NULL) ? preg_split('/[\s]/', App\Event::find($id)->end)[0] . 'T' . preg_split('/[\s]/', App\Event::find($id)->end)[1] : '') }}">
+                                <input id="end" type="datetime-local" class="form-control" name="end" value="{{ old('end') }}">
                                 @if ($errors->has('end'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('end') }}</strong>
@@ -123,7 +127,7 @@
                             <div class="col-md-6 col-md-offset-4">
                                 <div class="checkbox">
                                     <label>
-                                        <input id="allDayCheck" type="checkbox" name="allDayCheck" onclick="check()" {{ old('allDayCheck') ? 'checked' : ((App\Event::find($id)->allDay == 1) ? 'checked' : '') }}> All Day Event
+                                        <input id="allDayCheck" type="checkbox" name="allDayCheck" onclick="check()" {{ old('allDayCheck') ? 'checked' : '' }}> All Day Event
                                     </label>
                                 </div>
                             </div>
@@ -134,18 +138,11 @@
                                 <button type="submit" class="btn btn-primary">
                                   Submit
                                 </button>
-                                <button type="button" class="btn btn-danger" onclick="remove()">
-                                  Delete
-                                </button>
                             </div>
                         </div>
                       </form>
-                      <form id="deleteForm" action="/event/{{ $id }}" method="POST">
-                        <input name="_method" type="hidden" value="DELETE">
-                        {{ csrf_field() }}
-                      </form>
                     @else
-                      You cannot edit this event.
+                      You cannot create events.
                     @endcan
                 </div>
             </div>

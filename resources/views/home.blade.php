@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Main Page')
+
 @section('content')
 <script>
   $(document).ready(function() {
@@ -76,10 +78,18 @@
       },
       editable: true,
       eventLimit: true, // allow "more" link when too many events
+      customButtons: {
+        create: {
+          text: 'new event',
+          click: function() {
+            window.location = '/event/create';
+          }
+        }
+      },
       header: {
         left:   'today prev,next',
         center: 'title',
-        right:  'month,agendaWeek,agendaDay'
+        right:  'create month,agendaWeek,agendaDay'
       },
     });
 
