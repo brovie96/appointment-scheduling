@@ -4,6 +4,7 @@
 
 @section('content')
 
+@can('update', App\Event::find($id))
 <script>
   var start;
   var startlabel;
@@ -78,6 +79,7 @@
     }
   });
 </script>
+@endcan
 
 <div class="container">
     <div class="row">

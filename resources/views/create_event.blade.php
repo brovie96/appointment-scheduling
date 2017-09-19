@@ -4,6 +4,7 @@
 
 @section('content')
 
+@can('create', App\Event::class)
 <script>
   var start;
   var startlabel;
@@ -70,6 +71,7 @@
     }
   });
 </script>
+@endcan
 
 <div class="container">
     <div class="row">
