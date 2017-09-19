@@ -39,7 +39,7 @@ class EventsController extends Controller
     {
       $request->validate([
         'start' => 'date_multi_format:"Y-m-d\TH:i:s","Y-m-d\TH:i","Y-m-d"',
-        'end'   => 'date_multi_format:"Y-m-d\TH:i:s","Y-m-d\TH:i","Y-m-d"|after:start|nullable'
+        'end'   => 'date_multi_format:"Y-m-d\TH:i:s","Y-m-d\TH:i","Y-m-d"|after_or_equal:start|nullable'
       ]);
       $event = new Event;
       $event->user_id = $request->user_id;
@@ -88,14 +88,14 @@ class EventsController extends Controller
     {
       $request->validate([
         'start' => 'date_multi_format:"Y-m-d\TH:i:s","Y-m-d\TH:i","Y-m-d"',
-        'end'   => 'date_multi_format:"Y-m-d\TH:i:s","Y-m-d\TH:i","Y-m-d"|after:start|nullable'
+        'end'   => 'date_multi_format:"Y-m-d\TH:i:s","Y-m-d\TH:i","Y-m-d"|after_or_equal:start|nullable'
       ]);
       $event = Event::find($id);
       $event->title = $request->title;
       $event->description = $request->description;
       $event->start = $request->start;
       $event->end = $request->end;
-      if($request->has('allDay')) //coming from drag-and-drop
+      if($request->has('allDay')) //coming from drag-and-drop or resize
         $event->allDay = $request->allDay;
       else //coming from form
         $event->allDay = $request->has('allDayCheck') ? 1 : 0;

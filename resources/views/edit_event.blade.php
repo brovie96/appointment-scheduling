@@ -57,8 +57,13 @@
     end = $('#end');
     endlabel = $('#endlabel');
     deleteForm = $('#deleteForm');
-    if(checkbox.is(":checked"))
+    if(checkbox.is(":checked")) {
       check();
+      @if(old("start") != NULL)
+      start.prop('value', '{{ old("start") }}');
+      end.prop('value', '{{ old("end") }}');
+      @endif
+    }
   });
 </script>
 
