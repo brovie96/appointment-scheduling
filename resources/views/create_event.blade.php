@@ -64,7 +64,7 @@
     deleteForm = $('#deleteForm');
     if(checkbox.is(":checked")) {
       check();
-      if({{ (old("start") != NULL) ? '1' : '0'}} != 0) {
+      if({{ (old("start") != NULL) ? 'true' : 'false'}}) {
         start.prop('value', '{{ old("start") }}');
         end.prop('value', '{{ old("end") }}');
       }
