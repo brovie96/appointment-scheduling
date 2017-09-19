@@ -18,8 +18,13 @@
       startlabel.html('Start Date (yyyy-mm-dd)');
       endlabel.html('End Date (optional)');
       var time = new Date(start.prop('value'));
-      start.prop('type', 'date');
-      start.prop('value', time.toISOString().split('T')[0]);
+      if(start.prop('value') != '') {
+        time = new Date(start.prop('value'));
+        start.prop('type', 'date');
+        start.prop('value', time.toISOString().split('T')[0]);
+      }
+      else
+        start.prop('type', 'date');
       if(end.prop('value') != '') {
         time = new Date(end.prop('value'));
         end.prop('type', 'date');
@@ -33,8 +38,13 @@
       startlabel.html('Start Date/Time<br>(yyyy-mm-ddThh:mm)');
       endlabel.html('End Date/Time (optional)');
       var time = new Date(start.prop('value'));
-      start.prop('type', 'datetime-local');
-      start.prop('value', time.toISOString().split('T')[0] + "T00:00:00");
+      if(start.prop('value') != '') {
+        time = new Date(start.prop('value'));
+        start.prop('type', 'date');
+        start.prop('value', time.toISOString().split('T')[0]);
+      }
+      else
+        start.prop('type', 'date');
       if(end.prop('value') != '') {
         time = new Date(end.prop('value'));
         end.prop('type', 'datetime-local');
@@ -59,10 +69,10 @@
     deleteForm = $('#deleteForm');
     if(checkbox.is(":checked")) {
       check();
-      @if(old("start") != NULL)
-      start.prop('value', '{{ old("start") }}');
-      end.prop('value', '{{ old("end") }}');
-      @endif
+      if({{ (old("start") != NULL) ? '1' : '0'}} != 0) {
+        start.prop('value', '{{ old("start") }}');
+        end.prop('value', '{{ old("end") }}');
+      }
     }
   });
 </script>
