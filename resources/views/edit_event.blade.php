@@ -73,6 +73,8 @@
         start.prop('value', '{{ old("start") }}');
         end.prop('value', '{{ old("end") }}');
       }
+      if(start.prop('value') == end.prop('value'))
+        end.prop('value', '');
     }
   });
 </script>
@@ -125,7 +127,7 @@
                             <label id='endlabel' for="end" class="col-md-4 control-label">End Date/Time (optional)</label>
 
                             <div class="col-md-6">
-                                <input id="end" type="datetime-local" class="form-control" name="end" value="{{ (old('end') != NULL) ? old('end') : ((App\Event::find($id)->end != NULL) ? preg_split('/[\s]/', App\Event::find($id)->end)[0] . 'T' . preg_split('/[\s]/', App\Event::find($id)->end)[1] : '') }}">
+                                <input id="end" type="datetime-local" class="form-control" name="end" value="{{ (old('end') != NULL) ? old('end') : ((App\Event::find($id)->end != NULL) ? (App\Event::find($id)->allDay == 1 ? preg_split('/[\s]/', (new Carbon\Carbon(App\Event::find($id)->end))->subDay())[0] . 'T' . preg_split('/[\s]/', (new Carbon\Carbon(App\Event::find($id)->end))->subDay())[1] : preg_split('/[\s]/', App\Event::find($id)->end)[0] . 'T' . preg_split('/[\s]/', App\Event::find($id)->end)[1]) : '') }}">
                                 @if ($errors->has('end'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('end') }}</strong>

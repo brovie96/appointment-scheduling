@@ -48,6 +48,8 @@ class EventsController extends Controller
           $end = new Carbon($event->end);
           if(($event->allDay == 1 && strcmp($start->toDateString(), $end->toDateString()) == 0) || ($event->allDay == 0 && strcmp($start->toDateTimeString(), $end->toDateTimeString()) == 0))
             $event->end = NULL;
+          else if($event->allDay == 1) //more intuitive end date for all-day events
+            $event->end = $end->addDay();
         }
       }
       $event->save();
@@ -94,6 +96,8 @@ class EventsController extends Controller
           $end = new Carbon($event->end);
           if(($event->allDay == 1 && strcmp($start->toDateString(), $end->toDateString()) == 0) || ($event->allDay == 0 && strcmp($start->toDateTimeString(), $end->toDateTimeString()) == 0))
             $event->end = NULL;
+          else if($event->allDay == 1) //more intuitive end date for all-day events
+            $event->end = $end->addDay();
         }
       }
       $event->save();
