@@ -14,6 +14,8 @@
   function check() {
     if(checkbox.is(":checked")) {
       //alert("Box checked!");
+      startlabel.html('Start Date (yyyy-mm-dd)');
+      endlabel.html('End Date (optional)');
       var time;
       if(start.prop('value') != '') {
         time = new Date(start.prop('value'));
@@ -29,11 +31,11 @@
       }
       else
         end.prop('type', 'date');
-      startlabel.html('Start Date (yyyy-mm-dd)');
-      endlabel.html('End Date (optional)');
     }
     else {
       //alert("Box unchecked!");
+      startlabel.html('Start Date/Time<br>(yyyy-mm-ddThh:mm)');
+      endlabel.html('End Date/Time (optional)');
       var time;
       if(start.prop('value') != '') {
         time = new Date(start.prop('value'));
@@ -49,8 +51,6 @@
       }
       else
         end.prop('type', 'datetime-local');
-      startlabel.html('Start Date/Time<br>(yyyy-mm-ddThh:mm)');
-      endlabel.html('End Date/Time (optional)');
     }
   }
 
@@ -61,8 +61,13 @@
     end = $('#end');
     endlabel = $('#endlabel');
     deleteForm = $('#deleteForm');
-    if(checkbox.is(":checked"))
+    if(checkbox.is(":checked")) {
       check();
+      @if(old("start") != NULL)
+      start.prop('value', '{{ old("start") }}');
+      end.prop('value', '{{ old("end") }}');
+      @endif
+    }
   });
 </script>
 
