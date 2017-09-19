@@ -71,6 +71,10 @@ class EventsController extends Controller
      */
     public function update(Request $request, $id)
     {
+      $request->validate([
+        'start' => 'date_multi_format:"Y-m-d\TH:i:s","Y-m-d\TH:i","Y-m-d"',
+        'end'   => 'date_multi_format:"Y-m-d\TH:i:s","Y-m-d\TH:i","Y-m-d"|after:start|nullable'
+      ]);
       $event = Event::find($id);
       $event->title = $request->title;
       $event->description = $request->description;

@@ -90,7 +90,12 @@
                             <label id='startlabel' for="start" class="col-md-4 control-label">Start Date/Time<br>(yyyy-mm-ddThh:mm)</label>
 
                             <div class="col-md-6">
-                                <input id="start" type="datetime-local" class="form-control" name="start" value="{{ preg_split('/[\s]/', App\Event::find($id)->start)[0] . 'T' . preg_split('/[\s]/', App\Event::find($id)->start)[1] }}" required>
+                                <input id="start" type="datetime-local" class="form-control" name="start" value="{{ (old('start') != NULL) ? old('start') : preg_split('/[\s]/', App\Event::find($id)->start)[0] . 'T' . preg_split('/[\s]/', App\Event::find($id)->start)[1] }}" required>
+                                @if ($errors->has('start'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('start') }}</strong>
+                                    </span>
+                                @endif
                             </div>
                         </div>
 
@@ -98,7 +103,12 @@
                             <label id='endlabel' for="start" class="col-md-4 control-label">End Date/Time (optional)</label>
 
                             <div class="col-md-6">
-                                <input id="end" type="datetime-local" class="form-control" name="end" value="{{ (App\Event::find($id)->end != NULL) ? preg_split('/[\s]/', App\Event::find($id)->end)[0] . 'T' . preg_split('/[\s]/', App\Event::find($id)->end)[1] : '' }}">
+                                <input id="end" type="datetime-local" class="form-control" name="end" value="{{ (old('end') != NULL) ? old('end') : ((App\Event::find($id)->end != NULL) ? preg_split('/[\s]/', App\Event::find($id)->end)[0] . 'T' . preg_split('/[\s]/', App\Event::find($id)->end)[1] : '') }}">
+                                @if ($errors->has('end'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('end') }}</strong>
+                                    </span>
+                                @endif
                             </div>
                         </div>
 
