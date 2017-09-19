@@ -73,7 +73,7 @@
         start.prop('value', '{{ old("start") }}');
         end.prop('value', '{{ old("end") }}');
       }
-      if(start.prop('value') == end.prop('value'))
+      else if(start.prop('value') == end.prop('value'))
         end.prop('value', '');
     }
   });
