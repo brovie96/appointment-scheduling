@@ -17,4 +17,4 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('/event', 'EventsController', ['except' => ['show', 'index']]);
+Route::resource('/event', 'EventsController', ['only' => ['create', 'edit']]);

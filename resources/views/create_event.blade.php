@@ -86,7 +86,7 @@
                         </div>
                     @endif
                     @can('create', App\Event::class)
-                      <form class="form-horizontal" action="/event" method="POST">
+                      <form class="form-horizontal" action="/api/event" method="POST">
                         {{ csrf_field() }}
                         <input name="user_id" type="hidden" value="{{ Auth::user()->id }}">
                         <div class="form-group">

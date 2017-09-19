@@ -94,7 +94,7 @@
                         </div>
                     @endif
                     @can('update', App\Event::find($id))
-                      <form class="form-horizontal" action="/event/{{ $id }}" method="POST">
+                      <form class="form-horizontal" action="/api/event/{{ $id }}" method="POST">
                         <input name="_method" type="hidden" value="PUT">
                         {{ csrf_field() }}
                         <div class="form-group">
@@ -159,7 +159,7 @@
                             </div>
                         </div>
                       </form>
-                      <form id="deleteForm" action="/event/{{ $id }}" method="POST">
+                      <form id="deleteForm" action="/api/event/{{ $id }}" method="POST">
                         <input name="_method" type="hidden" value="DELETE">
                         {{ csrf_field() }}
                       </form>

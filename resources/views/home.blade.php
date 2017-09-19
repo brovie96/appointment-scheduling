@@ -42,9 +42,10 @@
       },
       eventDrop: function(event, delta, revertFunc) {
         $.ajax({
-          url: 'event/' + event.eventid,
-          method: 'PUT',
+          url: 'api/event/' + event.eventid,
+          method: 'POST',
           data: {
+            _method: 'PUT',
             title: event.title,
             description: event.description,
             start: event.start.format(),
@@ -55,9 +56,10 @@
       },
       eventResize: function(event, delta, revertFunc) {
         $.ajax({
-          url: 'event/' + event.eventid,
-          method: 'PUT',
+          url: 'api/event/' + event.eventid,
+          method: 'POST',
           data: {
+            _method: 'PUT',
             title: event.title,
             description: event.description,
             start: event.start.format(),
