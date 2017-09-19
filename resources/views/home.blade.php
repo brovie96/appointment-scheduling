@@ -41,9 +41,8 @@
         element.prop('title', event.description);
       },
       eventDrop: function(event, delta, revertFunc) {
-        $.ajax({
+        $.post({
           url: 'api/event/' + event.eventid,
-          method: 'POST',
           data: {
             _method: 'PUT',
             title: event.title,
@@ -55,9 +54,8 @@
         });
       },
       eventResize: function(event, delta, revertFunc) {
-        $.ajax({
+        $.post({
           url: 'api/event/' + event.eventid,
-          method: 'POST',
           data: {
             _method: 'PUT',
             title: event.title,
