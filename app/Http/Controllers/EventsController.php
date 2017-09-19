@@ -40,7 +40,16 @@ class EventsController extends Controller
       if($request->has('allDay')) //coming from drag-and-drop
         $event->allDay = $request->allDay;
       else //coming from form
+      {
         $event->allDay = $request->has('allDayCheck') ? 1 : 0;
+        if($event->end != NULL)
+        {
+          $start = new Carbon($event->start);
+          $end = new Carbon($event->end);
+          if(($event->allDay == 1 && strcmp($start->toDateString(), $end->toDateString()) == 0) || ($event->allDay == 0 && strcmp($start->toDateTimeString(), $end->toDateTimeString()) == 0))
+            $event->end = NULL;
+        }
+      }
       $event->save();
       return redirect('/');
     }
@@ -77,7 +86,16 @@ class EventsController extends Controller
       if($request->has('allDay')) //coming from drag-and-drop or resize
         $event->allDay = $request->allDay;
       else //coming from form
+      {
         $event->allDay = $request->has('allDayCheck') ? 1 : 0;
+        if($event->end != NULL)
+        {
+          $start = new Carbon($event->start);
+          $end = new Carbon($event->end);
+          if(($event->allDay == 1 && strcmp($start->toDateString(), $end->toDateString()) == 0) || ($event->allDay == 0 && strcmp($start->toDateTimeString(), $end->toDateTimeString()) == 0))
+            $event->end = NULL;
+        }
+      }
       $event->save();
       return redirect('/');
     }
