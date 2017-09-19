@@ -41,11 +41,11 @@
       var time = new Date(start.prop('value'));
       if(start.prop('value') != '') {
         time = new Date(start.prop('value'));
-        start.prop('type', 'date');
-        start.prop('value', time.toISOString().split('T')[0]);
+        start.prop('type', 'datetime-local');
+        start.prop('value', time.toISOString().split('T')[0] + "T00:00:00");
       }
       else
-        start.prop('type', 'date');
+        start.prop('type', 'datetime-local');
       if(end.prop('value') != '') {
         time = new Date(end.prop('value'));
         end.prop('type', 'datetime-local');
